@@ -13,7 +13,7 @@ import Foundation
 public macro stringify<T>(_ value: T) -> (T, String) = #externalMacro(module: "HSMacroMacros", type: "StringifyMacro")
 
 @freestanding(expression)
-public macro unwrap(_ urlString: String) -> URL = #externalMacro(module: "HSMacroMacros", type: "UnwrapMacro")
+public macro unwrap(_ urlString: String) -> URL = #externalMacro(module: "HSMacroMacros", type: "UnwrapURLMacro")
 
 @attached(member, names: named(init))
 public macro EnumSubset<Superset>() = #externalMacro(module: "HSMacroMacros", type: "EnumSubsetMacro")

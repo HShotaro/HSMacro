@@ -13,9 +13,9 @@ import XCTest
 import HSMacroMacros
 #endif
 
-final class UnwrapMacroTests: XCTestCase {
+final class UnwrapURLMacroTests: XCTestCase {
     let testMacros: [String: Macro.Type] = [
-        "unwrap": UnwrapMacro.self,
+        "unwrap": UnwrapURLMacro.self,
     ]
     
     func testMacro() throws {
@@ -25,15 +25,11 @@ final class UnwrapMacroTests: XCTestCase {
             #unwrap("https://www.google.com/")
             """,
             expandedSource: """
-                guard let url = URL(string: "https://www.google.com/") else {
-                    preconditionFailure(
-                        #"Unexpectedly found nil: ‘"https://www.google.com/"’ "#,
-                        file: nil,
-                        line: nil
-                    )
-                }
-                return url
+            #unwrap("https://www.google.com/")
             """,
+            diagnostics: [
+                DiagnosticSpec(message: "noLocation error", line: 1, column: 1)
+            ],
             macros: testMacros
         )
         #else

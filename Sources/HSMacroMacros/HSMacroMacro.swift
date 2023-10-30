@@ -8,6 +8,6 @@ struct HSMacroPlugin: CompilerPlugin {
     let providingMacros: [Macro.Type] = [
         StringifyMacro.self,
         EnumSubsetMacro.self,
-        UnwrapMacro.self
+        UnwrapURLMacro.self
     ]
 }
