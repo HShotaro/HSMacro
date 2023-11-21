@@ -17,3 +17,6 @@ public macro unwrap(_ urlString: String) -> URL = #externalMacro(module: "HSMacr
 
 @attached(member, names: named(init))
 public macro EnumSubset<Superset>() = #externalMacro(module: "HSMacroMacros", type: "EnumSubsetMacro")
+
+@attached(peer, names: overloaded)
+macro AddAsncThrows() = #externalMacro(module: "HSMacroMacros", type: "AddAsncThrowsMacro")
