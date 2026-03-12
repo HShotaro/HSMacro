@@ -9,6 +9,8 @@ struct HSMacroPlugin: CompilerPlugin {
         StringifyMacro.self,
         EnumSubsetMacro.self,
         UnwrapURLMacro.self,
-        AddAsncThrowsMacro.self
+        AddAsncThrowsMacro.self,
+        KmpObservableViewModelMacro.self,
+        KmpObserveIgnoreMacro.self,
     ]
 }
