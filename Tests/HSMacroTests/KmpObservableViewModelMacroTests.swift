@@ -118,8 +118,7 @@ final class KmpObservableViewModelMacroTests: XCTestCase {
             """,
             expandedSource: """
             class IosHomeViewModel: ObservableObject {
-                @Published\u{20}
-                var selectedGenreId: String? = nil
+                @Published var selectedGenreId: String? = nil
 
                 private let viewModel: HomeViewModel
 

@@ -12,5 +12,7 @@ struct HSMacroPlugin: CompilerPlugin {
         AddAsncThrowsMacro.self,
         KmpObservableViewModelMacro.self,
         KmpObserveIgnoreMacro.self,
+        KmpForwardMacro.self,
+        KmpForwardAllMacro.self,
     ]
 }

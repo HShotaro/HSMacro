@@ -36,3 +36,30 @@ public macro KmpObservableViewModel() = #externalMacro(module: "HSMacroMacros", 
 /// KMP との型変換が必要なプロパティに付与する。
 @attached(peer)
 public macro KmpObserveIgnore() = #externalMacro(module: "HSMacroMacros", type: "KmpObserveIgnoreMacro")
+
+/// `IosXxxViewModel` クラス内の関数に付与することで、対応する KMP ViewModel メソッドへの
+/// デリゲートボディを自動生成する。
+///
+///   - `@KmpForward func loadHomeData()` → `{ viewModel.loadHomeData() }`
+///   - `@KmpForward func search(query: String) -> [Result]` → `{ return viewModel.search(query: query) }`
+///   - `@KmpForward func select(_ item: Item)` → `{ viewModel.select(item) }`
+///
+/// `@KmpObservableViewModel` と組み合わせて使用する。関数名は KMP ViewModel のメソッド名と一致させる。
+@attached(body)
+public macro KmpForward() = #externalMacro(module: "HSMacroMacros", type: "KmpForwardMacro")
+
+/// `IosXxxViewModel` の KMP インターフェース conformance extension に付けることで、
+/// ボディなし関数宣言に `@KmpForward` を自動付与し、デリゲートボディを一括生成する。
+///
+/// **基本パターン**:
+/// ```swift
+/// @KmpForwardAll
+/// extension IosHomeViewModel: @MainActor HomeViewModelInterface {
+///     func loadHomeData()          // → { viewModel.loadHomeData() }
+///     func search(query: String)   // → { viewModel.search(query: query) }
+/// }
+/// ```
+///
+/// 関数は `{}` なしのボディなし宣言で記述すること。
+@attached(memberAttribute)
+public macro KmpForwardAll() = #externalMacro(module: "HSMacroMacros", type: "KmpForwardAllMacro")
