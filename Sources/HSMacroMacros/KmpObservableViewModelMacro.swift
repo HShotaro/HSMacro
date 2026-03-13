@@ -117,7 +117,23 @@ public struct KmpObservableViewModelMacro: MemberMacro {
             }
             """)
 
-        return [viewModelProp, uiStateProp, setupFunc]
+        // --- init() の自動生成（既存 init がなければ追加）---
+        let providerKey = middlePart.prefix(1).lowercased() + middlePart.dropFirst() + "ViewModel"
+        let hasExistingInit = classDecl.memberBlock.members.contains { member in
+            member.decl.is(InitializerDeclSyntax.self)
+        }
+        var members: [DeclSyntax] = [viewModelProp, uiStateProp, setupFunc]
+        if !hasExistingInit {
+            let initDecl = DeclSyntax(stringLiteral: """
+                init() {
+                    self.viewModel = IosDependencies.shared.provider.\(providerKey)
+                    setupKmpObservations()
+                }
+                """)
+            members.append(initDecl)
+        }
+
+        return members
     }
 }
 

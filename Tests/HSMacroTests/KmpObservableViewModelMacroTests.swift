@@ -37,6 +37,11 @@ final class KmpObservableViewModelMacroTests: XCTestCase {
                         }
                     }
                 }
+
+                init() {
+                    self.viewModel = IosDependencies.shared.provider.homeViewModel
+                    setupKmpObservations()
+                }
             }
             """,
             macros: testMacros
@@ -64,6 +69,11 @@ final class KmpObservableViewModelMacroTests: XCTestCase {
                             self?.uiState = value
                         }
                     }
+                }
+
+                init() {
+                    self.viewModel = IosDependencies.shared.provider.loginViewModel
+                    setupKmpObservations()
                 }
             }
             """,
@@ -100,6 +110,11 @@ final class KmpObservableViewModelMacroTests: XCTestCase {
                         }
                     }
                 }
+
+                init() {
+                    self.viewModel = IosDependencies.shared.provider.homeViewModel
+                    setupKmpObservations()
+                }
             }
             """,
             macros: testMacros
@@ -119,6 +134,49 @@ final class KmpObservableViewModelMacroTests: XCTestCase {
             expandedSource: """
             class IosHomeViewModel: ObservableObject {
                 @Published var selectedGenreId: String? = nil
+
+                private let viewModel: HomeViewModel
+
+                @Published var uiState = HomeUiState()
+
+                func setupKmpObservations() {
+                    viewModel.observeUiState { [weak self] value in
+                        Task { @MainActor [weak self] in
+                            self?.uiState = value
+                        }
+                    }
+                }
+
+                init() {
+                    self.viewModel = IosDependencies.shared.provider.homeViewModel
+                    setupKmpObservations()
+                }
+            }
+            """,
+            macros: testMacros
+        )
+    }
+
+    // MARK: - init() 生成制御
+
+    /// 既存 init がある場合は init() を生成しないこと
+    func testSkipsInitGenerationWhenInitExists() {
+        assertMacroExpansion(
+            """
+            @KmpObservableViewModel
+            class IosHomeViewModel: ObservableObject {
+                init(custom: Bool) {
+                    self.viewModel = IosDependencies.shared.provider.homeViewModel
+                    setupKmpObservations()
+                }
+            }
+            """,
+            expandedSource: """
+            class IosHomeViewModel: ObservableObject {
+                init(custom: Bool) {
+                    self.viewModel = IosDependencies.shared.provider.homeViewModel
+                    setupKmpObservations()
+                }
 
                 private let viewModel: HomeViewModel
 
