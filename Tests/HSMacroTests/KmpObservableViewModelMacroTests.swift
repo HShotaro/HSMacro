@@ -26,7 +26,7 @@ final class KmpObservableViewModelMacroTests: XCTestCase {
             expandedSource: """
             class IosHomeViewModel: ObservableObject {
 
-                private let viewModel: HomeViewModel
+                nonisolated(unsafe) private let viewModel: HomeViewModel
 
                 @Published var uiState = HomeUiState()
 
@@ -63,7 +63,7 @@ final class KmpObservableViewModelMacroTests: XCTestCase {
             expandedSource: """
             class IosLoginViewModel: ObservableObject {
 
-                private let viewModel: LoginViewModel
+                nonisolated(unsafe) private let viewModel: LoginViewModel
 
                 @Published var uiState = LoginUiState()
 
@@ -102,7 +102,7 @@ final class KmpObservableViewModelMacroTests: XCTestCase {
             class IosHomeViewModel: ObservableObject {
                 @Published var extraState: String = ""
 
-                private let viewModel: HomeViewModel
+                nonisolated(unsafe) private let viewModel: HomeViewModel
 
                 @Published var uiState = HomeUiState()
 
@@ -147,7 +147,7 @@ final class KmpObservableViewModelMacroTests: XCTestCase {
             class IosHomeViewModel: ObservableObject {
                 @Published var selectedGenreId: String? = nil
 
-                private let viewModel: HomeViewModel
+                nonisolated(unsafe) private let viewModel: HomeViewModel
 
                 @Published var uiState = HomeUiState()
 
@@ -194,7 +194,7 @@ final class KmpObservableViewModelMacroTests: XCTestCase {
                     setupKmpObservations()
                 }
 
-                private let viewModel: HomeViewModel
+                nonisolated(unsafe) private let viewModel: HomeViewModel
 
                 @Published var uiState = HomeUiState()
 
@@ -228,7 +228,7 @@ final class KmpObservableViewModelMacroTests: XCTestCase {
             expandedSource: """
             class IosSearchViewModel: ObservableObject {
 
-                private let viewModel: SearchViewModel
+                nonisolated(unsafe) private let viewModel: SearchViewModel
 
                 @Published var uiState = SearchUiState()
 
@@ -267,7 +267,7 @@ final class KmpObservableViewModelMacroTests: XCTestCase {
             class IosLoginViewModel: ObservableObject {
                 deinit {}
 
-                private let viewModel: LoginViewModel
+                nonisolated(unsafe) private let viewModel: LoginViewModel
 
                 @Published var uiState = LoginUiState()
 
@@ -310,7 +310,7 @@ final class KmpObservableViewModelMacroTests: XCTestCase {
                 }
                 deinit {}
 
-                private let viewModel: LoginViewModel
+                nonisolated(unsafe) private let viewModel: LoginViewModel
 
                 @Published var uiState = LoginUiState()
 

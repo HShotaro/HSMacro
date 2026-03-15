@@ -106,7 +106,7 @@ public struct KmpObservableViewModelMacro: MemberMacro {
 
         // --- 生成するメンバー ---
         let viewModelProp = DeclSyntax(
-            stringLiteral: "private let viewModel: \(viewModelTypeName)"
+            stringLiteral: "nonisolated(unsafe) private let viewModel: \(viewModelTypeName)"
         )
         let uiStateProp = DeclSyntax(
             stringLiteral: "@Published var uiState = \(uiStateTypeName)()"
