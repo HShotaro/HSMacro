@@ -30,7 +30,7 @@ macro AddAsncThrows() = #externalMacro(module: "HSMacroMacros", type: "AddAsncTh
 ///
 /// クラス内の `@Published var` プロパティも走査し、`@KmpObserveIgnore` のないものを
 /// `setupKmpObservations()` に追加する。
-@attached(member, names: named(setupKmpObservations), named(viewModel), named(uiState), named(init))
+@attached(member, names: named(setupKmpObservations), named(viewModel), named(uiState), named(init), named(deinit))
 public macro KmpObservableViewModel() = #externalMacro(module: "HSMacroMacros", type: "KmpObservableViewModelMacro")
 
 /// `@KmpObservableViewModel` の observation 自動生成から除外するマーカー。

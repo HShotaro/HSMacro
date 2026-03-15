@@ -133,6 +133,21 @@ public struct KmpObservableViewModelMacro: MemberMacro {
             members.append(initDecl)
         }
 
+        // --- deinit の自動生成（既存 deinit がなければ追加）---
+        // viewModel.clear() で viewModelScope をキャンセルし、Kotlin/Native GC にリソース解放を促す。
+        // シングルトン ViewModel（LoginViewModel など）は手動で deinit {} を定義して opt-out する。
+        let hasExistingDeinit = classDecl.memberBlock.members.contains { member in
+            member.decl.is(DeinitializerDeclSyntax.self)
+        }
+        if !hasExistingDeinit {
+            let deinitDecl = DeclSyntax(stringLiteral: """
+                deinit {
+                    viewModel.clear()
+                }
+                """)
+            members.append(deinitDecl)
+        }
+
         return members
     }
 }

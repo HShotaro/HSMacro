@@ -42,6 +42,10 @@ final class KmpObservableViewModelMacroTests: XCTestCase {
                     self.viewModel = IosDependencies.shared.provider.homeViewModel
                     setupKmpObservations()
                 }
+
+                deinit {
+                    viewModel.clear()
+                }
             }
             """,
             macros: testMacros
@@ -74,6 +78,10 @@ final class KmpObservableViewModelMacroTests: XCTestCase {
                 init() {
                     self.viewModel = IosDependencies.shared.provider.loginViewModel
                     setupKmpObservations()
+                }
+
+                deinit {
+                    viewModel.clear()
                 }
             }
             """,
@@ -115,6 +123,10 @@ final class KmpObservableViewModelMacroTests: XCTestCase {
                     self.viewModel = IosDependencies.shared.provider.homeViewModel
                     setupKmpObservations()
                 }
+
+                deinit {
+                    viewModel.clear()
+                }
             }
             """,
             macros: testMacros
@@ -151,6 +163,10 @@ final class KmpObservableViewModelMacroTests: XCTestCase {
                     self.viewModel = IosDependencies.shared.provider.homeViewModel
                     setupKmpObservations()
                 }
+
+                deinit {
+                    viewModel.clear()
+                }
             }
             """,
             macros: testMacros
@@ -181,6 +197,122 @@ final class KmpObservableViewModelMacroTests: XCTestCase {
                 private let viewModel: HomeViewModel
 
                 @Published var uiState = HomeUiState()
+
+                func setupKmpObservations() {
+                    viewModel.observeUiState { [weak self] value in
+                        Task { @MainActor [weak self] in
+                            self?.uiState = value
+                        }
+                    }
+                }
+
+                deinit {
+                    viewModel.clear()
+                }
+            }
+            """,
+            macros: testMacros
+        )
+    }
+
+    // MARK: - deinit 生成制御
+
+    /// deinit { viewModel.clear() } が自動生成されること
+    func testGeneratesDeinitWithClear() {
+        assertMacroExpansion(
+            """
+            @KmpObservableViewModel
+            class IosSearchViewModel: ObservableObject {
+            }
+            """,
+            expandedSource: """
+            class IosSearchViewModel: ObservableObject {
+
+                private let viewModel: SearchViewModel
+
+                @Published var uiState = SearchUiState()
+
+                func setupKmpObservations() {
+                    viewModel.observeUiState { [weak self] value in
+                        Task { @MainActor [weak self] in
+                            self?.uiState = value
+                        }
+                    }
+                }
+
+                init() {
+                    self.viewModel = IosDependencies.shared.provider.searchViewModel
+                    setupKmpObservations()
+                }
+
+                deinit {
+                    viewModel.clear()
+                }
+            }
+            """,
+            macros: testMacros
+        )
+    }
+
+    /// 既存 deinit がある場合は deinit を生成しないこと（シングルトン ViewModel の opt-out パターン）
+    func testSkipsDeinitGenerationWhenDeinitExists() {
+        assertMacroExpansion(
+            """
+            @KmpObservableViewModel
+            class IosLoginViewModel: ObservableObject {
+                deinit {}
+            }
+            """,
+            expandedSource: """
+            class IosLoginViewModel: ObservableObject {
+                deinit {}
+
+                private let viewModel: LoginViewModel
+
+                @Published var uiState = LoginUiState()
+
+                func setupKmpObservations() {
+                    viewModel.observeUiState { [weak self] value in
+                        Task { @MainActor [weak self] in
+                            self?.uiState = value
+                        }
+                    }
+                }
+
+                init() {
+                    self.viewModel = IosDependencies.shared.provider.loginViewModel
+                    setupKmpObservations()
+                }
+            }
+            """,
+            macros: testMacros
+        )
+    }
+
+    /// 既存 init と既存 deinit が両方ある場合はどちらも生成しないこと
+    func testSkipsBothInitAndDeinitWhenBothExist() {
+        assertMacroExpansion(
+            """
+            @KmpObservableViewModel
+            class IosLoginViewModel: ObservableObject {
+                init() {
+                    self.viewModel = IosDependencies.shared.provider.loginViewModel
+                    setupKmpObservations()
+                }
+                deinit {}
+            }
+            """,
+            expandedSource: """
+            class IosLoginViewModel: ObservableObject {
+                init() {
+                    self.viewModel = IosDependencies.shared.provider.loginViewModel
+                    setupKmpObservations()
+                }
+                deinit {}
+
+                private let viewModel: LoginViewModel
+
+                @Published var uiState = LoginUiState()
 
                 func setupKmpObservations() {
                     viewModel.observeUiState { [weak self] value in
