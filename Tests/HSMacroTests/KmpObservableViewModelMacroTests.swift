@@ -44,7 +44,7 @@ final class KmpObservableViewModelMacroTests: XCTestCase {
                 }
 
                 deinit {
-                    viewModel.clear()
+                    viewModel.dispose()
                 }
             }
             """,
@@ -81,7 +81,7 @@ final class KmpObservableViewModelMacroTests: XCTestCase {
                 }
 
                 deinit {
-                    viewModel.clear()
+                    viewModel.dispose()
                 }
             }
             """,
@@ -125,7 +125,7 @@ final class KmpObservableViewModelMacroTests: XCTestCase {
                 }
 
                 deinit {
-                    viewModel.clear()
+                    viewModel.dispose()
                 }
             }
             """,
@@ -165,7 +165,7 @@ final class KmpObservableViewModelMacroTests: XCTestCase {
                 }
 
                 deinit {
-                    viewModel.clear()
+                    viewModel.dispose()
                 }
             }
             """,
@@ -207,7 +207,7 @@ final class KmpObservableViewModelMacroTests: XCTestCase {
                 }
 
                 deinit {
-                    viewModel.clear()
+                    viewModel.dispose()
                 }
             }
             """,
@@ -217,7 +217,7 @@ final class KmpObservableViewModelMacroTests: XCTestCase {
 
     // MARK: - deinit 生成制御
 
-    /// deinit { viewModel.clear() } が自動生成されること
+    /// deinit { viewModel.dispose() } が自動生成されること
     func testGeneratesDeinitWithClear() {
         assertMacroExpansion(
             """
@@ -246,7 +246,7 @@ final class KmpObservableViewModelMacroTests: XCTestCase {
                 }
 
                 deinit {
-                    viewModel.clear()
+                    viewModel.dispose()
                 }
             }
             """,

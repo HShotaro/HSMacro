@@ -142,7 +142,7 @@ public struct KmpObservableViewModelMacro: MemberMacro {
         if !hasExistingDeinit {
             let deinitDecl = DeclSyntax(stringLiteral: """
                 deinit {
-                    viewModel.clear()
+                    viewModel.dispose()
                 }
                 """)
             members.append(deinitDecl)
